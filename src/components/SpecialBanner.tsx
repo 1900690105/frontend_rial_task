@@ -49,6 +49,9 @@ export default function SpecialBanner({ soldOut, specialItem, blurb }: Props) {
           <p className="text-2xl font-bold text-[#B45309]">
             €{specialItem.price.toFixed(2)}
           </p>
+          <button className="bg-[#B45309] p-2 rounded-2xl text-white m-2 mx-auto">
+            🧺 Buy Now
+          </button>
         </div>
       </div>
     </section>

@@ -33,10 +33,6 @@ export default function Navbar({ search, setSearch }: Props) {
       label: "Sides",
       href: "#sides",
     },
-    {
-      label: "Hours",
-      href: "#hours",
-    },
   ];
 
   return (

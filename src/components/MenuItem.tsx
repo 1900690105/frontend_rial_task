@@ -71,11 +71,15 @@ group-hover:scale-110
                 )}
               </div>
 
-              {item.description && (
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                  {item.description}
-                </p>
-              )}
+              <div className="mt-2 min-h-13">
+                {item.description ? (
+                  <p className="text-sm leading-relaxed text-slate-600">
+                    {item.description}
+                  </p>
+                ) : (
+                  <div />
+                )}
+              </div>
             </div>
 
             <span className="shrink-0 text-xl font-bold text-[#B45309]">
@@ -128,7 +132,7 @@ group-hover:scale-110
                     −
                   </button>
 
-                  <span className="min-w-[40px] text-center font-medium">
+                  <span className="min-w-10 text-center font-medium">
                     {quantity}
                   </span>
 

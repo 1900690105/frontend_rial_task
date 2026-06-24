@@ -17,7 +17,7 @@ export default function FoodModal({ item, open, onClose }: Props) {
       className="
       fixed
       inset-0
-      z-[999]
+      z-999
       flex
       items-center
       justify-center
