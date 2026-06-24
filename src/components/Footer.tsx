@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Props = {
   address: string;
   phone: string;
@@ -6,7 +8,7 @@ type Props = {
 
 export default function Footer({ address, phone, instagram }: Props) {
   return (
-    <footer className="mt-24 border-t border-amber-100 bg-[#FFFDF8]">
+    <footer className="mt-24  border-t-4 border-dotted border-[#B45309] bg-[#FFFDF8]">
       {" "}
       <div className="mx-auto max-w-7xl px-4 py-12">
         {" "}
@@ -14,7 +16,8 @@ export default function Footer({ address, phone, instagram }: Props) {
           {/* Contact Info */}{" "}
           <div>
             {" "}
-            <h3 className="mb-4 text-2xl font-bold text-[#B45309]">
+            <h3 className="mb-4 text-2xl font-bold text-[#B45309] flex gap-2 items-center">
+              <Image src={"/logo1.png"} alt="logo" width={60} height={60} />{" "}
               Cardamom House{" "}
             </h3>
             <p className="mb-4 text-slate-600">

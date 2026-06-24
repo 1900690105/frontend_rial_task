@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { useActiveSection } from "@/hooks/useActiveSection";
+import Image from "next/image";
 
 type Props = {
   search: string;
@@ -63,9 +64,11 @@ export default function Navbar({ search, setSearch }: Props) {
             tracking-tight
             text-[#B45309]
             md:text-2xl
+            h-16
+            w-16
             "
           >
-            Cardamom House
+            <Image src={"/logo1.png"} alt="logo" width={200} height={200} />
           </Link>
 
           {/* Desktop */}
