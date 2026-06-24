@@ -193,10 +193,11 @@ npm install
 ```
 
 ### Adding Env file(.env.local)
-
+```bash
 NEXT_PUBLIC_EMAILJS_SERVICE_ID
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+```
 
 ### Run Development Server
 
