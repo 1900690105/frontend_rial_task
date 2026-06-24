@@ -94,11 +94,58 @@ export default function Hero({
               className="h-full w-full object-cover"
             />
             {/* Today's special badge floating on the image, brand-colored */}
-            <div className="absolute bottom-4 left-4 rounded-xl bg-white/90 px-4 py-2 shadow-md backdrop-blur-sm">
-              <p className="text-[10px] font-semibold uppercase tracking-wide text-[#B45309]">
-                Today&#39;s Special
+            <div
+              className="
+  absolute
+  left-3
+  top-3
+
+  sm:left-4
+  sm:top-4
+
+  rounded-xl
+  bg-white/90
+  backdrop-blur-sm
+
+  px-3
+  py-2
+
+  sm:px-4
+  sm:py-3
+
+  shadow-lg
+  border
+  border-white/50
+
+  max-w-45
+  sm:max-w-55
+  md:max-w-none
+  "
+            >
+              <p
+                className="
+    text-[9px]
+    sm:text-[10px]
+    font-semibold
+    uppercase
+    tracking-wider
+    text-[#B45309]
+    "
+              >
+                Today&apos;s Special
               </p>
-              <p className="text-sm font-semibold text-stone-900">
+
+              <p
+                className="
+    mt-1
+    text-[11px]
+    sm:text-sm
+    md:text-base
+    font-semibold
+    leading-tight
+    text-stone-900
+    "
+              >
                 {specialItem.name}
               </p>
             </div>
