@@ -105,7 +105,6 @@ export default function Navbar({ search, setSearch }: Props) {
               );
             })}
 
-            {/* Search */}
             <div className="relative ml-2 w-64">
               <Search
                 size={16}
