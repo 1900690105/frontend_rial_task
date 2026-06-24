@@ -5,40 +5,58 @@ type Props = {
 
 export default function HoursBlock({ hours, currentDay = "Tuesday" }: Props) {
   return (
-    <section id="hours" className="py-12 scroll-mt-28">
-      <h2 className="mb-6 text-3xl font-bold">Opening Hours</h2>
+    <section
+      id="hours"
+      aria-labelledby="hours-heading"
+      className="scroll-mt-28 py-12"
+    >
+      <h2 id="hours-heading" className="mb-3 text-3xl font-bold text-stone-900">
+        Opening Hours
+      </h2>
 
-      <div className="overflow-hidden rounded-2xl border bg-white">
-        {Object.entries(hours).map(([day, time]) => {
-          const isToday = day.toLowerCase() === currentDay.toLowerCase();
+      <p className="mb-6 text-stone-600">
+        Visit us during our operating hours. Today&#39;s hours are highlighted
+        below.
+      </p>
 
-          const isClosed = time.toLowerCase() === "closed";
+      <div className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm">
+        <dl>
+          {Object.entries(hours).map(([day, time]) => {
+            const isToday = day.toLowerCase() === currentDay.toLowerCase();
 
-          return (
-            <div
-              key={day}
-              className={`flex items-center justify-between border-b p-4 last:border-b-0 ${
-                isToday ? "bg-amber-50" : ""
-              }`}
-            >
-              <span
-                className={`font-medium capitalize ${
-                  isToday ? "text-[#B45309]" : ""
+            const isClosed = time.toLowerCase() === "closed";
+
+            return (
+              <div
+                key={day}
+                className={`flex items-center justify-between border-b border-stone-100 p-4 last:border-b-0 ${
+                  isToday ? "bg-amber-50" : ""
                 }`}
               >
-                {day}
-              </span>
+                <dt
+                  className={`font-medium capitalize ${
+                    isToday ? "text-[#B45309]" : "text-stone-900"
+                  }`}
+                >
+                  {day}
 
-              <span
-                className={`${
-                  isClosed ? "font-medium text-red-600" : "text-gray-700"
-                }`}
-              >
-                {time}
-              </span>
-            </div>
-          );
-        })}
+                  {isToday && <span className="sr-only"> (Today)</span>}
+                </dt>
+
+                <dd
+                  className={
+                    isClosed ? "font-medium text-red-600" : "text-stone-700"
+                  }
+                  aria-label={
+                    isToday ? `Today's hours: ${time}` : `${day}: ${time}`
+                  }
+                >
+                  {time}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
       </div>
     </section>
   );

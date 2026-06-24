@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import emailjs from "@emailjs/browser";
+import Link from "next/link";
 
 type HeroProps = {
   name: string;
@@ -558,7 +559,10 @@ export default function Hero({
 
   if (!specialItem) return null;
   return (
-    <header className="relative overflow-hidden ">
+    <header
+      className="relative overflow-hidden "
+      aria-labelledby="hero-heading"
+    >
       {/* Decorative background glow — brand-toned, not generic */}
       <div
         aria-hidden="true"
@@ -577,6 +581,7 @@ export default function Hero({
           <span
             role="status"
             aria-live="polite"
+            aria-atomic="true"
             className={`inline-flex w-fit items-center gap-2 rounded-full px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium shadow-sm ring-1 transition-colors ${
               isOpen
                 ? "bg-[#B45309]/10 text-[#B45309] ring-[#B45309]/30"
@@ -599,23 +604,34 @@ export default function Hero({
             {message}
           </span>
 
-          <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-stone-900">
+          <h1
+            className="text-4xl sm:text-5xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1] text-stone-900"
+            id="hero-heading"
+          >
             {name}
+            <span className="sr-only"> - Coffee Shop and Restaurant</span>
           </h1>
 
           <p className="max-w-xl text-base sm:text-lg md:text-xl text-stone-600 leading-relaxed">
             {tagline}
           </p>
 
-          <div className="mt-2 flex flex-wrap gap-3">
-            <button className="rounded-full bg-[#B45309] px-6 py-3 text-sm sm:text-base font-medium text-white shadow-sm transition hover:bg-[#923f07] focus:outline-none focus:ring-2 focus:ring-[#B45309]/40 focus:ring-offset-2">
+          <div className="mt-2 flex flex-wrap lg:gap-3 md:gap-2 gap-1">
+            <Link
+              href="#menu"
+              className="rounded-full bg-[#B45309] px-6 py-3 text-sm sm:text-base font-medium text-white shadow-sm transition hover:bg-[#923f07] focus:outline-none focus:ring-2 focus:ring-[#B45309]/40 focus:ring-offset-2"
+            >
               View Menu
-            </button>
+            </Link>
             <button
+              type="button"
+              aria-haspopup="dialog"
+              aria-expanded={reservationOpen}
+              aria-controls="reservation-modal"
               onClick={() => setReservationOpen(true)}
               className="rounded-full bg-white px-6 py-3 text-sm sm:text-base font-medium text-stone-900 ring-1 ring-stone-200 transition hover:bg-[#B45309]/5 hover:ring-[#B45309]/40"
             >
-              Reserve a Table
+              Reserve a Table 📆
             </button>
           </div>
         </div>
@@ -625,13 +641,14 @@ export default function Hero({
           <div className="relative mx-auto aspect-4/3 w-full max-w-md overflow-hidden rounded-3xl shadow-xl ring-1 ring-[#B45309]/15 md:max-w-none">
             <Image
               src="/hero.png"
-              alt={`${name} — signature dish preview`}
-              loading="lazy"
+              alt={`${specialItem.name} served at ${name}`}
               width={800}
               height={600}
+              priority
+              fetchPriority="high"
               className="h-full w-full object-cover"
             />
-            {/* Today's special badge floating on the image, brand-colored */}
+
             <div
               className="
   absolute
@@ -659,6 +676,7 @@ export default function Hero({
   sm:max-w-55
   md:max-w-none
   "
+              aria-label={`Today's special is ${specialItem.name}`}
             >
               <p
                 className="

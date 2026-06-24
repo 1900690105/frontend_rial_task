@@ -1,15 +1,42 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
 
 type Props = {
-  item: any;
+  item: {
+    name: string;
+    image?: string;
+    description?: string;
+    price: number;
+    tags: string[];
+  };
   open: boolean;
   onClose: () => void;
 };
 
 export default function FoodModal({ item, open, onClose }: Props) {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    if (open) {
+      document.body.style.overflow = "hidden";
+
+      window.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open, onClose]);
+
   if (!open || !item) return null;
 
   return (
@@ -22,12 +49,17 @@ export default function FoodModal({ item, open, onClose }: Props) {
       items-center
       justify-center
       bg-black/60
-      backdrop-blur-sm
       p-4
+      backdrop-blur-sm
       "
       onClick={onClose}
+      aria-hidden="true"
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="food-modal-title"
+        aria-describedby="food-modal-description"
         onClick={(e) => e.stopPropagation()}
         className="
         w-full
@@ -36,21 +68,22 @@ export default function FoodModal({ item, open, onClose }: Props) {
         rounded-3xl
         bg-white
         shadow-2xl
-        animate-in
-        fade-in
-        zoom-in-95
         "
       >
-        <div className="relative h-72 w-full">
+        {/* Image */}
+
+        <div className="relative h-64 sm:h-80 w-full">
           <Image
-            src={item.image || "/menu/placeholder.jpg"}
+            src={item.image || "/placeholder_image.png"}
             alt={item.name}
             fill
+            priority
             className="object-cover"
           />
 
           <button
             onClick={onClose}
+            aria-label="Close food details"
             className="
             absolute
             right-4
@@ -58,40 +91,75 @@ export default function FoodModal({ item, open, onClose }: Props) {
             rounded-full
             bg-white/90
             p-2
-            shadow
+            shadow-md
+            transition
+            hover:bg-white
             "
           >
             <X size={18} />
           </button>
         </div>
 
-        <div className="p-6">
-          <div className="mb-4 flex items-start justify-between">
-            <h2 className="text-3xl font-bold">{item.name}</h2>
+        {/* Content */}
 
-            <span className="text-2xl font-bold text-[#B45309]">
+        <div className="p-6 sm:p-8">
+          <div className="mb-4 flex items-start justify-between gap-4">
+            <h2
+              id="food-modal-title"
+              className="
+              text-2xl
+              font-bold
+              text-slate-900
+              sm:text-3xl
+              "
+            >
+              {item.name}
+            </h2>
+
+            <span
+              className="
+              shrink-0
+              text-xl
+              font-bold
+              text-[#B45309]
+              sm:text-2xl
+              "
+            >
               €{item.price.toFixed(2)}
             </span>
           </div>
 
-          <p className="mb-6 text-slate-600">{item.description}</p>
+          <p
+            id="food-modal-description"
+            className="
+            mb-6
+            leading-relaxed
+            text-slate-600
+            "
+          >
+            {item.description || "No description available."}
+          </p>
 
-          <div className="flex flex-wrap gap-2">
-            {item.tags.map((tag: string) => (
-              <span
-                key={tag}
-                className="
+          {item.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {item.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="
                   rounded-full
                   bg-amber-100
                   px-3
                   py-1
                   text-sm
+                  font-medium
+                  text-amber-800
                   "
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

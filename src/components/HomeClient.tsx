@@ -55,8 +55,9 @@ export default function HomeClient({ state }: Props) {
             blurb={restaurant.today_special.blurb}
           />
         )}
-
-        <MenuContent search={search} categories={categories} state={state} />
+        <section id="menu">
+          <MenuContent search={search} categories={categories} state={state} />
+        </section>
 
         <HoursBlock
           hours={restaurant.restaurant.hours}

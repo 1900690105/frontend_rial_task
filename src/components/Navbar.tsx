@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Menu, Search, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import Image from "next/image";
 
@@ -35,160 +35,83 @@ export default function Navbar({ search, setSearch }: Props) {
     },
   ];
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   return (
-    <header
-      className="
-      sticky
-      top-0
-      z-50
-      border-b
-      border-amber-100
-      bg-[#FFFDF8]/90
-      backdrop-blur-xl
-      shadow-sm
-      "
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Brand */}
-          <Link
-            href="/"
-            className="
-            shrink-0
-            text-xl
-            font-bold
-            tracking-tight
-            text-[#B45309]
-            md:text-2xl
-            h-16
-            w-16
-            "
-          >
-            <Image src={"/logo1.png"} alt="logo" width={200} height={200} />
-          </Link>
+    <>
+      {/* Skip Link */}
+      <a
+        href="#main-content"
+        className="
+          sr-only
+          focus:not-sr-only
+          focus:absolute
+          focus:left-4
+          focus:top-4
+          focus:z-100
+          focus:rounded-lg
+          focus:bg-white
+          focus:px-4
+          focus:py-2
+          focus:shadow-lg
+        "
+      >
+        Skip to main content
+      </a>
 
-          {/* Desktop */}
-          <div className="hidden items-center gap-3 lg:flex">
-            {navItems.map((item) => {
-              const isActive = activeSection === item.href.replace("#", "");
-
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className={`
-                    rounded-full
-                    px-4
-                    py-2
-                    text-sm
-                    font-medium
-                    transition-all
-                    duration-300
-                    ${
-                      isActive
-                        ? `
-                          bg-[#B45309]
-                          text-white
-                          shadow-amber-200
-                        `
-                        : `
-                          text-slate-700
-                          hover:bg-amber-50
-                          hover:text-[#B45309]
-                        `
-                    }
-                  `}
-                >
-                  {item.label}
-                </a>
-              );
-            })}
-
-            <div className="relative ml-2 w-64">
-              <Search
-                size={16}
-                className="
-                absolute
-                left-3
-                top-1/2
-                -translate-y-1/2
-                text-slate-400
-                "
-              />
-
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search menu..."
-                className="
-                  h-10
-                  w-full
-                  rounded-full
-                  border
-                  border-[#B45309]
-                  bg-white
-                  pl-10
-                  pr-4
-                  text-sm
-                  outline-none
-                  transition
-                "
-              />
-            </div>
-          </div>
-
-          {/* Mobile Actions */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <button
-              aria-label="Open Menu"
-              onClick={() => setOpen(!open)}
+      <header
+        className="
+          sticky
+          top-0
+          z-50
+          border-b
+          border-amber-100
+          bg-[#FFFDF8]/90
+          backdrop-blur-xl
+          shadow-sm
+        "
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between">
+            {/* Logo */}
+            <Link
+              href="/"
+              aria-label="Cardamom House Home"
               className="
-              rounded-lg
-              p-2
-              hover:bg-amber-50
+                flex
+                h-16
+                w-16
+                items-center
+                justify-center
+                shrink-0
               "
             >
-              {open ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Drawer */}
-        {open && (
-          <div className="border-t py-4 lg:hidden">
-            {/* Mobile Search */}
-            <div className="relative mb-4">
-              <Search
-                size={16}
-                className="
-                absolute
-                left-3
-                top-1/2
-                -translate-y-1/2
-                text-slate-400
-                "
+              <Image
+                src="/logo1.png"
+                alt="Cardamom House logo"
+                width={64}
+                height={64}
+                priority
               />
+            </Link>
 
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search menu..."
-                className="
-                  h-10
-                  w-full
-                  rounded-full
-                  border
-                  border-amber-100
-                  bg-white
-                  pl-10
-                  pr-4
-                  text-sm
-                  outline-none
-                "
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
+            {/* Desktop Navigation */}
+            <nav
+              aria-label="Main navigation"
+              className="hidden items-center gap-3 lg:flex"
+            >
               {navItems.map((item) => {
                 const isActive = activeSection === item.href.replace("#", "");
 
@@ -196,14 +119,18 @@ export default function Navbar({ search, setSearch }: Props) {
                   <a
                     key={item.href}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
                     className={`
-                      rounded-xl
+                      rounded-full
                       px-4
-                      py-3
+                      py-2
                       text-sm
                       font-medium
-                      transition
+                      transition-all
+                      duration-300
+                      focus:outline-none
+                      focus:ring-2
+                      focus:ring-[#B45309]
                       ${
                         isActive
                           ? `
@@ -211,7 +138,9 @@ export default function Navbar({ search, setSearch }: Props) {
                             text-white
                           `
                           : `
+                            text-slate-700
                             hover:bg-amber-50
+                            hover:text-[#B45309]
                           `
                       }
                     `}
@@ -220,10 +149,159 @@ export default function Navbar({ search, setSearch }: Props) {
                   </a>
                 );
               })}
-            </div>
+
+              {/* Search */}
+              <div role="search" className="relative ml-2 w-64">
+                <label htmlFor="desktop-menu-search" className="sr-only">
+                  Search menu items
+                </label>
+
+                <Search
+                  size={16}
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    left-3
+                    top-1/2
+                    -translate-y-1/2
+                    text-slate-400
+                  "
+                />
+
+                <input
+                  id="desktop-menu-search"
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search menu..."
+                  autoComplete="off"
+                  className="
+                    h-10
+                    w-full
+                    rounded-full
+                    border
+                    border-[#B45309]
+                    bg-white
+                    pl-10
+                    pr-4
+                    text-sm
+                    outline-none
+                    transition
+                    focus:ring-2
+                    focus:ring-amber-200
+                  "
+                />
+              </div>
+            </nav>
+
+            {/* Mobile Menu Button */}
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={
+                open ? "Close navigation menu" : "Open navigation menu"
+              }
+              onClick={() => setOpen(!open)}
+              className="
+                rounded-lg
+                p-2
+                hover:bg-amber-50
+                focus:outline-none
+                focus:ring-2
+                focus:ring-[#B45309]
+                lg:hidden
+              "
+            >
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
-        )}
-      </div>
-    </header>
+
+          {/* Mobile Drawer */}
+          {open && (
+            <div id="mobile-menu" className="border-t py-4 lg:hidden">
+              <div role="search" className="relative mb-4">
+                <label htmlFor="mobile-menu-search" className="sr-only">
+                  Search menu items
+                </label>
+
+                <Search
+                  size={16}
+                  aria-hidden="true"
+                  className="
+                    absolute
+                    left-3
+                    top-1/2
+                    -translate-y-1/2
+                    text-slate-400
+                  "
+                />
+
+                <input
+                  id="mobile-menu-search"
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search menu..."
+                  autoComplete="off"
+                  className="
+                    h-10
+                    w-full
+                    rounded-full
+                    border
+                    border-amber-100
+                    bg-white
+                    pl-10
+                    pr-4
+                    text-sm
+                    outline-none
+                    focus:ring-2
+                    focus:ring-amber-200
+                  "
+                />
+              </div>
+
+              <nav
+                aria-label="Mobile navigation"
+                className="flex flex-col gap-2"
+              >
+                {navItems.map((item) => {
+                  const isActive = activeSection === item.href.replace("#", "");
+
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      aria-current={isActive ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className={`
+                        rounded-xl
+                        px-4
+                        py-3
+                        text-sm
+                        font-medium
+                        transition
+                        ${
+                          isActive
+                            ? `
+                              bg-[#B45309]
+                              text-white
+                            `
+                            : `
+                              hover:bg-amber-50
+                            `
+                        }
+                      `}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
+              </nav>
+            </div>
+          )}
+        </div>
+      </header>
+    </>
   );
 }
